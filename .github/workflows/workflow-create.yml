@@ -29,7 +29,7 @@ jobs:
         - name: echo branchname
           run: |
             raw=$(git branch -r --contains ${{ github.ref }})
-            branch=$(echo ${raw/origin\/} | cut -c 1-10)
+            branch=$(echo ${raw/origin\/} | rev | cut -d'/' -f 1 | rev | cut -c 1-10)
             echo ::set-env name=BRANCH::$branch        
 
         - name: Terraform Init
