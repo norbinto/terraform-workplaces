@@ -28,7 +28,7 @@ jobs:
 
         - name: echo branchname
           run: |
-            raw=$(git branch --contains ${{ github.event.pull_request.head.ref }})
+            raw=${{ github.head_ref}}
             branch=$(echo ${raw/origin\/} | rev | cut -d'/' -f 1 | rev | cut -c 1-10)
             echo ::set-env name=BRANCH::$branch        
 
