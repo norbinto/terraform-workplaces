@@ -22,8 +22,9 @@ jobs:
 
         - name: echo branchname
           run: |
-            branch=${GITHUB_REF##*/}
-            echo '::set-env name=BRANCHNAME::$branch'
+            raw=$(git branch -r --contains ${{ github.ref }})
+            branch=${raw/origin\/}
+            echo ::set-env name=BRANCH::$branch
         
         - name: Checkout
           uses: actions/checkout@v2
