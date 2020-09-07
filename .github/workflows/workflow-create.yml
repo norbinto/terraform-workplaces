@@ -20,8 +20,11 @@ jobs:
         - name: Set SourceDir based on  prod branch
           run: echo '::set-env name=SOURCE_DIR::${{ github.workspace }}/infrastructure/dev'
 
+        - name: echo branchname
+          run: echo ${GITHUB_REF##*/}
+
         - name: Set Branchname
-          run: echo '::set-env name=BRANCHNAME::${GITHUB_REF##*/}'
+          run: echo '::set-env name=BRANCHNAME::${{GITHUB_REF##*/}}'
         
         - name: Checkout
           uses: actions/checkout@v2
