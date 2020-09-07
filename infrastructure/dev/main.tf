@@ -1,6 +1,6 @@
 # Create a RG
 resource "azurerm_resource_group" "main" {
-  name     = "rg-norbi-dev-vnet"
+  name     = "rg-tf-${terraform.workspace}"
   location = "West Europe"
 }
 
