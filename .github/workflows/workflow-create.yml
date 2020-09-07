@@ -24,9 +24,6 @@ jobs:
           run: |
             branch=${GITHUB_REF##*/}
             echo '::set-env name=BRANCHNAME::$branch'
-
-        - name: Set Branchname
-          run: echo '::set-env name=BRANCHNAME::${GITHUB_REF##*/}'
         
         - name: Checkout
           uses: actions/checkout@v2
