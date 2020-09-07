@@ -1,0 +1,42 @@
+# .github/workflows/hello-world.yml
+#The name of the workflow, will be displayed on the Github actions page
+name: Continuous Deployment
+# when to execute it, similar to Azure DevOps trigger keyword
+#testing dev branch
+on: [push,pull_request]
+
+# list of jobs to execute
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+        ARM_CLIENT_ID: ${{ secrets.CLIENTID }}
+        ARM_CLIENT_SECRET: ${{ secrets.CLIENTSECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTIONID }}
+        ARM_TENANT_ID: ${{ secrets.TENANTID }}
+        SOURCE_DIR: ""
+    steps:
+        - name: Set SourceDir based on  prod branch
+          run: echo '::set-env name=SOURCE_DIR::${{ github.workspace }}/infrastructure/dev'
+
+        - name: Checkout
+          uses: actions/checkout@v2
+    
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v1.1.0
+
+        - name: Terraform Init
+          run: terraform init $SOURCE_DIR
+
+        - name: Terraform Validate
+          id: validate
+          run: terraform validate /home/runner/work/terraform-workplaces/ -no-color
+
+        - name: Terraform Plan
+          if: github.event_name == 'pull_request'
+          id: plan
+          run: terraform plan $SOURCE_DIR -no-color
+
+        - name: Terraform Apply
+          #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+          run: terraform apply -auto-approve $SOURCE_DIR
