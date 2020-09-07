@@ -35,8 +35,8 @@ jobs:
         - name: Terraform Init
           run: terraform init $SOURCE_DIR
 
-        - name: Terraform Workspace create
-          run: terraform workspace select $BRANCH $SOURCE_DIR || terraform workspace new $BRANCH $SOURCE_DIR
+        - name: Terraform Workspace select
+          run: terraform workspace select $BRANCH $SOURCE_DIR || true
 
         - name: Terraform Destroy
           if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
