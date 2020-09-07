@@ -48,4 +48,4 @@ jobs:
           run: |
             terraform workspace select default $SOURCE_DIR 
             terraform workspace delete $branch $SOURCE_DIR
-            terraform workspace show
+            terraform workspace show $SOURCE_DIR
