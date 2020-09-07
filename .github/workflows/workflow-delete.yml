@@ -32,6 +32,9 @@ jobs:
             branch=$(echo ${raw/origin\/} | rev | cut -d'/' -f 1 | rev | cut -c 1-10)
             echo ::set-env name=BRANCH::$branch        
 
+        - name: Terraform Init
+          run: terraform init $SOURCE_DIR
+
         - name: Terraform Workspace create
           run: terraform workspace select $BRANCH $SOURCE_DIR || terraform workspace new $BRANCH $SOURCE_DIR
 
