@@ -20,18 +20,18 @@ jobs:
         - name: Set SourceDir based on  prod branch
           run: echo '::set-env name=SOURCE_DIR::${{ github.workspace }}/infrastructure/dev'
 
-        - name: echo branchname
-          run: |
-            raw=$(git branch -r --contains ${{ github.ref }})
-            branch=${raw/origin\/}
-            echo ::set-env name=BRANCH::$branch
-        
         - name: Checkout
           uses: actions/checkout@v2
     
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v1.1.0
-        
+
+        - name: echo branchname
+          run: |
+            raw=$(git branch -r --contains ${{ github.ref }})
+            branch=${raw/origin\/}
+            echo ::set-env name=BRANCH::$branch        
+
         - name: Terraform Workspace create
           run: terraform workspace new $BRANCHNAME
 
