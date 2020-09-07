@@ -15,6 +15,7 @@ jobs:
         ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTIONID }}
         ARM_TENANT_ID: ${{ secrets.TENANTID }}
         SOURCE_DIR: ""
+        BRANCHNAME: ${GITHUB_REF##*/}
     steps:
         - name: Set SourceDir based on  prod branch
           run: echo '::set-env name=SOURCE_DIR::${{ github.workspace }}/infrastructure/dev'
@@ -24,6 +25,9 @@ jobs:
     
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v1.1.0
+        
+        - name: Terraform Workspace create
+          run: terraform workspace new BRANCHNAME
 
         - name: Terraform Init
           run: terraform init $SOURCE_DIR
