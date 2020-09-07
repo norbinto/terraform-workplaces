@@ -21,7 +21,9 @@ jobs:
           run: echo '::set-env name=SOURCE_DIR::${{ github.workspace }}/infrastructure/dev'
 
         - name: echo branchname
-          run: echo ${GITHUB_REF##*/}
+          run: |
+            branch=${GITHUB_REF##*/}
+            echo '::set-env name=BRANCHNAME::$branch'
 
         - name: Set Branchname
           run: echo '::set-env name=BRANCHNAME::${GITHUB_REF##*/}'
