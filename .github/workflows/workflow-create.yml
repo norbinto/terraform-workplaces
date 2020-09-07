@@ -3,7 +3,7 @@
 name: Continuous Deployment
 # when to execute it, similar to Azure DevOps trigger keyword
 #testing dev branch
-on: [push,pull_request]
+on: [push]
 
 # list of jobs to execute
 jobs:
