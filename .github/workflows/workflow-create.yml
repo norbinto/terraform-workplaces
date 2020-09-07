@@ -33,7 +33,7 @@ jobs:
             echo ::set-env name=BRANCH::$branch        
 
         - name: Terraform Workspace create
-          run: terraform workspace new $BRANCHNAME
+          run: terraform workspace new $BRANCH
 
         - name: Terraform Init
           run: terraform init $SOURCE_DIR
