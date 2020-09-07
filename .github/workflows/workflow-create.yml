@@ -27,7 +27,7 @@ jobs:
           uses: hashicorp/setup-terraform@v1.1.0
         
         - name: Terraform Workspace create
-          run: terraform workspace new BRANCHNAME
+          run: terraform workspace new $BRANCHNAME
 
         - name: Terraform Init
           run: terraform init $SOURCE_DIR
