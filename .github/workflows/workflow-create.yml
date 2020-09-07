@@ -48,5 +48,5 @@ jobs:
           run: terraform plan $SOURCE_DIR -no-color
 
         - name: Terraform Apply
-          if: not(github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+          if: (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)==false
           run: terraform apply -auto-approve $SOURCE_DIR
