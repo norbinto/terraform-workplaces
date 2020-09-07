@@ -28,11 +28,8 @@ jobs:
 
         - name: echo branchname
           run: |
-            raw=$(git branch -r --contains refs/heads/${{ github.event.pull_request.head.ref }})
-            echo $raw
+            raw=$(git branch --contains ${{ github.event.pull_request.head.ref }})
             branch=$(echo ${raw/origin\/} | rev | cut -d'/' -f 1 | rev | cut -c 1-10)
-            echo $branch
-            echo 'works'
             echo ::set-env name=BRANCH::$branch        
 
         - name: Terraform Workspace create
