@@ -3,7 +3,7 @@
 name: Continuous Deployment
 # when to execute it, similar to Azure DevOps trigger keyword
 #testing dev branch
-on: [push,pull_request]
+on: [pull_request]
 
 # list of jobs to execute
 jobs:
@@ -29,24 +29,12 @@ jobs:
         - name: echo branchname
           run: |
             raw=$(git branch -r --contains ${{ github.ref }})
-            branch=(echo ${raw/origin\/} | cut -c 1-4) 
+            branch=$(echo ${raw/origin\/} | cut -c 1-10)
             echo ::set-env name=BRANCH::$branch        
-
-        - name: Terraform Init
-          run: terraform init $SOURCE_DIR
 
         - name: Terraform Workspace create
           run: terraform workspace select $BRANCH $SOURCE_DIR || terraform workspace new $BRANCH $SOURCE_DIR
 
-        - name: Terraform Validate
-          id: validate
-          run: terraform validate /home/runner/work/terraform-workplaces/ -no-color
-
-        - name: Terraform Plan
-          if: github.event_name == 'pull_request'
-          id: plan
-          run: terraform plan $SOURCE_DIR -no-color
-
-        - name: Terraform Apply
-          #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-          run: terraform apply -auto-approve $SOURCE_DIR
+        - name: Terraform Destroy
+          if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+          run: terraform destroy -auto-approve $SOURCE_DIR
