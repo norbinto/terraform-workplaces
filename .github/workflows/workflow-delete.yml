@@ -43,3 +43,9 @@ jobs:
         - name: Terraform Destroy
           if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
           run: terraform destroy -auto-approve $SOURCE_DIR 
+        - name: Terraform Delete workspace
+          if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+          run: |
+            terraform workspace select default $SOURCE_DIR 
+            terraform workspace delete $branch $SOURCE_DIR
+            terraform workspace show
