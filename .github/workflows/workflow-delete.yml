@@ -3,7 +3,7 @@
 name: Continuous Deployment
 # when to execute it, similar to Azure DevOps trigger keyword
 #testing dev branch
-on: [push,pull_request]
+on: [pull_request]
 
 # list of jobs to execute
 jobs:
@@ -28,7 +28,7 @@ jobs:
 
         - name: echo branchname
           run: |
-            raw=${{ github.event.pull_request.head.ref }}
+            raw=${GITHUB_HEAD_REF##*/}
             branch=$(echo ${raw/origin\/} | rev | cut -d'/' -f 1 | rev | cut -c 1-10)
             echo ::set-env name=BRANCH::$branch        
 
